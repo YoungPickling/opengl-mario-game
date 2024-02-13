@@ -120,10 +120,43 @@ public class LevelEditorScene extends Scene {
         // Create indeces and upload
         IntBuffer elementBuffer = BufferUtils.createIntBuffer(elementArray.length);
         elementBuffer.put(elementArray).flip();
+
+        eboID = glGenBuffers();
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL_STATIC_DRAW);
+
+        // Add the vertex attribute pointers
+        int positionsSize = 3;
+        int colorSize = 4;
+        int floatSizeBytes = 4;
+        int vertexSizeBytes = (positionsSize + colorSize) * floatSizeBytes;
+        glVertexAttribPointer(0, positionsSize, GL_FLOAT, false, vertexSizeBytes, 0);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes, positionsSize * floatSizeBytes);
+        glEnableVertexAttribArray(1);
     }
 
     @Override
     public void update(float dt) {
+        // Bind shader program
+        glUseProgram(shaderProgram);
+        // Bind the VAO that we're using
+        glBindVertexArray(vaoID);
+
+        // Enable the vertex attribute pointers
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+
+        glDrawElements(GL_TRIANGLES, elementArray.length, GL_UNSIGNED_INT, 0);
+
+        // Unbind everything
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+
+        glBindVertexArray(0);
+
+        glUseProgram(0);
 
     }
 
