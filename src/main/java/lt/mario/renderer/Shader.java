@@ -171,4 +171,5 @@ public class Shader {
         use();
         glUniform1i(varLocation, val);
     }
+
 }
