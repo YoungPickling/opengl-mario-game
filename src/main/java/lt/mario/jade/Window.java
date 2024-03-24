@@ -24,8 +24,8 @@ public class Window {
     private static Scene currentScene;
 
     private Window() {
-        width = 1920;
-        height = 1080;
+        width = 800;
+        height = 600;
         title = "Mario";
         r = 1f;
         g = 1f;
